@@ -87,20 +87,19 @@ end
 
 function straightcrack(lc,γ,θ,σ1,μ)
     #μ = 0 #friction along shear crack
-    r = 1
-    c = r/lc #shear crack length
 
+    r =  1 #shear crack length
+    c = r/lc
     #r = 0.2 #length along wing crack = l for straight crack
     l = r;
     n = 1000 #Steps
     β = (1+μ*1im)/2 #complex function of friction
-    s = Array{Complex{Float64}}(undef,n)
-    X = Array{Complex{Float64}}(undef,n)
+    s = Array{Float64}(undef,n)
+    X = Array{Float64}(undef,n)
     for N = 1:n
-        s[N] = cos(π*(2N-1)/2n)
-        X[N] = cos(π*N/n)
+        s[N] = l*((cos(π*(2N-1)/2n)+1)/2+1)/2
     end
-    w = π/n
+    w = l*π/n
     #θ = π/6
     z = c.+s.*exp(1im*θ)
 
@@ -115,9 +114,9 @@ function straightcrack(lc,γ,θ,σ1,μ)
         L1.(0, z, z0, θ, β, c) .+
         L2.(0, z, z0, θ, β, c))
 
-    Z2 = π/2*(4/l*exp.(θ*1im)).+
+    Z2 = π/2*((4/l*exp.(θ*1im)).+
         L1.(r, z, z0, θ, β, c) .+
-        L2.(r, z, z0, θ, β, c)
+        L2.(r, z, z0, θ, β, c))
 
     Ss = S.(z, z0, θ, c)
     η = zeros(n,2)
@@ -134,7 +133,7 @@ function straightcrack(lc,γ,θ,σ1,μ)
 
     for i = 1:n
         A = [real(Z1[i]) imag(Z2[i]) ; imag(Z1[i]) -real(Z2[i])]
-        x = [(τ∞ - μ*σy∞ + τc)*real(Ss[i]) + σθ∞, (τ∞ - μ*σy∞ + τc)*imag(Ss[i]) + τr∞]
+        x = [(τ∞ - μ*σy∞ + τc)*real(w*Ss[i]) + σθ∞, (τ∞ - μ*σy∞ + τc)*imag(w*Ss[i]) + τr∞]
         η[i , :] .= A\x
     end
 
@@ -142,12 +141,12 @@ function straightcrack(lc,γ,θ,σ1,μ)
 
     # # plot(real(α),imag(α))
     #
-    K = 0
-    for i = 1:n
-        K = K+π/n*((2π)^3/2*exp(1im*θ)*(η[i,1]-1im*η[i,2]))*(X[i]-s[i])
+    K = w*((2π)^3/2*exp(1im*θ)*(η[1,1]-1im*η[1,2]))/sqrt(complex(z[1]))
+    for i = 2:n
+        K = K+w.*((2π)^3/2*exp(1im*θ)*(η[i,1]-1im*η[i,2]))/sqrt(complex(z[i]))
     end
 
     KI = real(K)
     KII = imag(K)
-    return K
+    return K, z
 end
