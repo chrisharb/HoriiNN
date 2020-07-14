@@ -1,5 +1,4 @@
-using Plots
-
+using PyPlot
 function L1(r, z, z0, θ, β, c)
     L1 = β*U((F(z, z0, c)+ F(z, conj(z0), c)), z0, c, θ) +
         conj(β)*U( (z0-z)*G(z, z0, c), z0, c, θ) -
@@ -43,7 +42,6 @@ function M2(r, s, θ)
     M2 = 1/conj(h)+2*exp(2im*θ)
 end
 
-pyplot()
 
 function CurvedCrack(l)
 μ = 0.5 #friction along shear crack
@@ -87,7 +85,6 @@ end
 
 function straightcrack(lc,γ,θ,σ1,μ)
     #μ = 0 #friction along shear crack
-
     r =  1 #shear crack length
     c = r/lc
     #r = 0.2 #length along wing crack = l for straight crack

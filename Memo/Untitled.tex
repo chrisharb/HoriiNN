@@ -1,0 +1,27 @@
+\documentclass[12pt,a4paper,twoside]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{natbib,graphicx}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\title{Some notes on the Horii and Nemat-Nasser solution for wing crack stress intensity factor estimation}
+\begin{document}
+\maketitle
+\section{Introduction}
+I have written this document to clarify and communicate some issues (which may not be valid) that I have following detailed inspection of \citet{Horii1985}. 
+In \citet{Horii1985} the authours seek to solve for the stress intensity factor at the tip of a wing crack.
+In order to do this they employ conformal mapping in the complex plane where the sought solution can be found by integration along a contour which satisfies certain boundary conditions arising from the geometry of the crack. 
+In this case a solution is sought which satisfies wing crack of length, $l$, with respect to a shear crack of length of length $c$.
+The problem is reduced to two isolated wedge cracks which interact along the path of the main shear crack, however the integration path does not traverse the shear crack and is instead wholly limited to the path along the wing crack.
+This is evident in all of the equations throughout the manuscript, for instance the final solution which is:-
+\begin{equation}\label{eq:Singular solution}
+\int_0^l\frac{\alpha(r)M_1(r) + \bar{\alpha}(r)M_2(r)}{s-r} dr+
+\int_0^l\left[\alpha(r)L_1(r) + \bar{\alpha}(r)L_2(r)\right] dr+
+\sigma_{\theta\theta}(s) + i\tau_{r\theta}(s) = 0
+\end{equation}
+\bibliographystyle{agufull}
+\bibliography{/Users/christopherharbord/Documents/library.bib}
+
+\end{document}
